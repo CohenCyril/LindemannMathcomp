@@ -607,7 +607,7 @@ Module RealField.
 Section ClassDef.
 
 Record class_of R :=
-  Class { base : NumField.class_of R; mixin : real_axiom (num_for R base) }.
+  Class { base : NumField.class_of R; mixin : @real_axiom (num_for R base) }.
 Definition base2 R (c : class_of R) := RealDomain.Class (@mixin R c).
 Local Coercion base : class_of >-> NumField.class_of.
 Local Coercion base2 : class_of >-> RealDomain.class_of.
@@ -636,6 +636,7 @@ Definition realDomainType := @RealDomain.Pack cT xclass xT.
 Definition fieldType := @GRing.Field.Pack cT xclass xT.
 Definition numFieldType := @NumField.Pack cT xclass xT.
 Definition join_realDomainType := @RealDomain.Pack numFieldType xclass xT.
+Definition join_numFieldType := @NumField.Pack realDomainType xclass xT.
 
 End ClassDef.
 
@@ -669,6 +670,7 @@ Canonical fieldType.
 Coercion numFieldType : type >-> NumField.type.
 Canonical numFieldType.
 Canonical join_realDomainType.
+Canonical join_numFieldType.
 Notation realFieldType := type.
 Notation "[ 'realFieldType' 'of' T ]" := (@pack T _ _ id _ _ id)
   (at level 0, format "[ 'realFieldType'  'of'  T ]") : form_scope.
@@ -820,13 +822,12 @@ End NumArchiDomain.
 Import NumArchiDomain.Exports.
 
 
-
 Module NumArchiField.
 
 Section ClassDef.
 
 Record class_of R :=
-  Class { base : NumField.class_of R; mixin : archimedean_axiom (num_for R base) }.
+  Class { base : NumField.class_of R; mixin : @archimedean_axiom (num_for R base) }.
 Definition base2 R (c : class_of R) := NumArchiDomain.Class (@mixin R c).
 Local Coercion base : class_of >-> NumField.class_of.
 Local Coercion base2 : class_of >-> NumArchiDomain.class_of.
@@ -897,21 +898,15 @@ End NumArchiField.
 Import NumArchiField.Exports.
 
 
-
-
-
-
 Module NumArchiClosedField.
 
 Section ClassDef.
 
 Record class_of R :=
-  Class { base : NumClosedField.class_of R; archi_mixin : archimedean_axiom (num_for R base) }.
-(*Definition base2 R (c : class_of R) := NumArchiDomain.Class (@archi_mixin R c).*)
-Definition base3 R (c : class_of R) := NumArchiField.Class (@archi_mixin R c).
+  Class { base : NumClosedField.class_of R; archi_mixin : @archimedean_axiom (num_for R base) }.
+Definition base2 R (c : class_of R) := NumArchiField.Class (@archi_mixin R c).
 Local Coercion base : class_of >-> NumClosedField.class_of.
-(*Local Coercion base2 : class_of >-> NumArchiDomain.class_of.*)
-Local Coercion base3 : class_of >-> NumArchiField.class_of.
+Local Coercion base2 : class_of >-> NumArchiField.class_of.
 
 Structure type := Pack {sort; _ : class_of sort; _ : Type}.
 Local Coercion sort : type >-> Sortclass.
@@ -939,13 +934,12 @@ Definition numFieldType := @NumField.Pack cT xclass xT.
 Definition numArchiFieldType := @NumArchiField.Pack cT xclass xT.
 Definition closedFieldType := @GRing.ClosedField.Pack cT xclass xT.
 Definition numClosedFieldType := @NumClosedField.Pack cT xclass xT.
-(*Definition join_numFieldType := @NumArchiDomain.Pack numFieldType xclass xT.*)
 
 End ClassDef.
 
 Module Exports.
 Coercion base : class_of >-> NumClosedField.class_of.
-Coercion base3 : class_of >-> NumArchiField.class_of.
+Coercion base2 : class_of >-> NumArchiField.class_of.
 Coercion sort : type >-> Sortclass.
 Bind Scope ring_scope with sort.
 Coercion eqType : type >-> Equality.type.
@@ -989,6 +983,7 @@ End Exports.
 End NumArchiClosedField.
 Import NumArchiClosedField.Exports.
 
+
 Module RealArchiDomain.
 
 Section ClassDef.
@@ -996,8 +991,8 @@ Section ClassDef.
 Record class_of R :=
   Class {base : RealDomain.class_of R; archi_mixin : @archimedean_axiom (num_for R base)}.
 Local Coercion base : class_of >-> RealDomain.class_of.
-Definition base3 R (c : class_of R) := NumArchiDomain.Class (@archi_mixin R c).
-Local Coercion base3 : class_of >-> NumArchiDomain.class_of.
+Definition base2 R (c : class_of R) := NumArchiDomain.Class (@archi_mixin R c).
+Local Coercion base2 : class_of >-> NumArchiDomain.class_of.
 
 Structure type := Pack {sort; _ : class_of sort; _ : Type}.
 Local Coercion sort : type >-> Sortclass.
@@ -1005,16 +1000,10 @@ Variables (T : Type) (cT : type).
 Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
 Let xT := let: Pack T _ _ := cT in T.
 Notation xclass := (class : class_of xT).
-(*Definition pack :=
+Definition pack :=
   fun bT b & phant_id (RealDomain.class bT) (b : RealDomain.class_of T) =>
   fun mT m & phant_id (NumArchiDomain.class mT) (@NumArchiDomain.Class T b m) =>
   Pack (@Class T b m) T.
-
-Definition clone c of phant_id class c := @Pack T c T.*)
-Definition pack b0 (m0 : archimedean_axiom (num_for T b0)) :=
-  fun bT b & phant_id (RealDomain.class bT) b =>
-  fun    m & phant_id m0 m => Pack (@Class T b m) T.
-
 
 Definition eqType := @Equality.Pack cT xclass xT.
 Definition choiceType := @Choice.Pack cT xclass xT.
@@ -1028,12 +1017,13 @@ Definition numDomainType := @NumDomain.Pack cT xclass xT.
 Definition numArchiDomainType := @NumArchiDomain.Pack cT xclass xT.
 Definition realDomainType := @RealDomain.Pack cT xclass xT.
 Definition join_numArchiDomainType := @NumArchiDomain.Pack realDomainType xclass xT.
+Definition join_realDomainType := @RealDomain.Pack numArchiDomainType xclass xT.
 
 End ClassDef.
 
 Module Exports.
 Coercion base : class_of >-> RealDomain.class_of.
-Coercion base3 : class_of >-> NumArchiDomain.class_of.
+Coercion base2 : class_of >-> NumArchiDomain.class_of.
 Coercion sort : type >-> Sortclass.
 Bind Scope ring_scope with sort.
 Coercion eqType : type >-> Equality.type.
@@ -1059,6 +1049,7 @@ Canonical realDomainType.
 Coercion numArchiDomainType : type >-> NumArchiDomain.type.
 Canonical numArchiDomainType.
 Canonical join_numArchiDomainType.
+Canonical join_realDomainType.
 Notation realArchiDomainType := type.
 Notation "[ 'realArchiDomainType' 'of' T ]" := (@pack T _ _ id _ _ id)
   (at level 0, format "[ 'realArchiDomainType'  'of'  T ]") : form_scope.
@@ -1067,35 +1058,21 @@ End Exports.
 End RealArchiDomain.
 Import RealArchiDomain.Exports.
 
-(*
 
 Module RealArchiField.
 
 Section ClassDef.
 
-Record realArchi_mixin_of (R : numDomainType) := RealArchiMixin {
-  _ : archimedean_axiom R;
-  _ : real_axiom R;
-}.
-
-Record class_of R := Class {
-  base : NumField.class_of R;
-  ra_mixin : realArchi_mixin_of (num_for R base)
-}.
-
-(*
 Record class_of R :=
-  Class { base : NumField.class_of R; real_mixin : @real_axiom (num_for R base);
-    archi_mixin : @archimedean_axiom (num_for R base) }.*)
-Local Coercion base : class_of >-> NumField.class_of.
-
-(*
-Definition base2 R (c : class_of R) := NumArchiField.Class (@archi_mixin R c).
-Local Coercion base2 : class_of >-> NumArchiField.class_of.
-Definition base3 R (c : class_of R) := RealField.Class (@real_mixin R c). 
-Local Coercion base3 : class_of >-> RealField.class_of. 
-*)
-
+  Class { base : RealField.class_of R; archi_mixin : @archimedean_axiom (num_for R base) }.
+Local Coercion base : class_of >-> RealField.class_of.
+Definition base2 R (c : class_of R) := NumArchiDomain.Class (@archi_mixin R c).
+Local Coercion base2 : class_of >-> NumArchiDomain.class_of.
+Definition base3 R (c : class_of R) := NumArchiField.Class (@archi_mixin R c).
+Local Coercion base3 : class_of >-> NumArchiField.class_of.
+Definition base4 R (c : class_of R) := RealArchiDomain.Class (@archi_mixin (@NumDomain.Pack R
+       (@RealDomain.base R (@RealField.base2 R (@base R c))) R) c).
+Local Coercion base4 : class_of >-> RealArchiDomain.class_of.
 
 Structure type := Pack {sort; _ : class_of sort; _ : Type}.
 Local Coercion sort : type >-> Sortclass.
@@ -1103,25 +1080,10 @@ Variables (T : Type) (cT : type).
 Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
 Let xT := let: Pack T _ _ := cT in T.
 Notation xclass := (class : class_of xT).
-
-Definition pack :=
-  fun bT b & phant_id (NumField.class bT)
-                      (b : NumField.class_of T) =>
-  fun mT m & phant_id (NumField.class mT) (@NumField.Class T b m) =>
-  fun mc => Pack (@Class T b m mc) T.
-Definition clone := fun b & phant_id class (b : class_of T) => Pack b T.
-
-
 Definition clone c of phant_id class c := @Pack T c T.
-Definition pack b0 (m0 : archimedean_axiom (num_for T b0)) (n0 : real_axiom (num_for T b0)):=
+Definition pack b0 (m0 : archimedean_axiom (num_for T b0)) :=
   fun bT b & phant_id (NumField.class bT) b =>
-  fun    m & phant_id m0 m => fun    n & phant_id n0 n => Pack (@Class T b m n) T.
-(*
-Definition pack :=
-  fun bT b & phant_id (RealField.class bT) (b : RealField.class_of T) =>
-  fun mT m & phant_id (NumArchiDomain.class mT) (@NumArchiDomain.Class T b m) =>
-  Pack (@Class T b m) T.
-*)
+  fun    m & phant_id m0 m => Pack (@Class T b m) T.
 
 Definition eqType := @Equality.Pack cT xclass xT.
 Definition choiceType := @Choice.Pack cT xclass xT.
@@ -1132,23 +1094,22 @@ Definition unitRingType := @GRing.UnitRing.Pack cT xclass xT.
 Definition comUnitRingType := @GRing.ComUnitRing.Pack cT xclass xT.
 Definition idomainType := @GRing.IntegralDomain.Pack cT xclass xT.
 Definition numDomainType := @NumDomain.Pack cT xclass xT.
-Definition numArchiDomainType := @NumArchiDomain.Pack cT xclass xT.
 Definition realDomainType := @RealDomain.Pack cT xclass xT.
 Definition fieldType := @GRing.Field.Pack cT xclass xT.
 Definition numFieldType := @NumField.Pack cT xclass xT.
 Definition realFieldType := @RealField.Pack cT xclass xT.
+Definition numArchiDomainType := @NumArchiDomain.Pack cT xclass xT.
 Definition numArchiFieldType := @NumArchiField.Pack cT xclass xT.
-
-
 Definition realArchiDomainType := @RealArchiDomain.Pack cT xclass xT.
-
 Definition join_numArchiDomainType := @NumArchiDomain.Pack numFieldType xclass xT.
 
 End ClassDef.
 
 Module Exports.
-Coercion base : class_of >-> NumField.class_of.
+Coercion base : class_of >-> RealField.class_of.
 Coercion base2 : class_of >-> NumArchiDomain.class_of.
+Coercion base3 : class_of >-> NumArchiField.class_of.
+Coercion base4 : class_of >-> RealArchiDomain.class_of.
 Coercion sort : type >-> Sortclass.
 Bind Scope ring_scope with sort.
 Coercion eqType : type >-> Equality.type.
@@ -1171,35 +1132,37 @@ Coercion numDomainType : type >-> NumDomain.type.
 Canonical numDomainType.
 Coercion numArchiDomainType : type >-> NumArchiDomain.type.
 Canonical numArchiDomainType.
+Coercion realDomainType : type >-> RealDomain.type.
+Canonical realDomainType.
+Coercion realArchiDomainType : type >-> RealArchiDomain.type.
+Canonical realArchiDomainType.
 Coercion fieldType : type >-> GRing.Field.type.
 Canonical fieldType.
 Coercion numFieldType : type >-> NumField.type.
 Canonical numFieldType.
+Coercion numArchiFieldType : type >-> NumArchiField.type.
+Canonical numArchiDomainType.
+Coercion realFieldType : type >-> RealField.type.
+Canonical realFieldType.
 Canonical join_numArchiDomainType.
-Notation numArchiFieldType := type.
-Notation "[ 'numArchiFieldType' 'of' T ]" := (@pack T _ _ id _ _ id)
-  (at level 0, format "[ 'numArchiFieldType'  'of'  T ]") : form_scope.
+Notation realArchiFieldType := type.
+Notation "[ 'realArchiFieldType' 'of' T ]" := (@pack T _ _ id _ _ id)
+  (at level 0, format "[ 'realArchiFieldType'  'of'  T ]") : form_scope.
 End Exports.
 
-End NumArchiField.
-Import NumArchiField.Exports.
-
-*)
+End RealArchiField.
+Import RealArchiField.Exports.
 
 
-
-(*
-Module NumArchiClosedField.
+Module RealClosedArchiField.
 
 Section ClassDef.
 
 Record class_of R :=
-  Class { base : NumClosedField.class_of R; archi_mixin : archimedean_axiom (num_for R base) }.
-(*Definition base2 R (c : class_of R) := NumArchiDomain.Class (@archi_mixin R c).*)
-Definition base3 R (c : class_of R) := NumArchiField.Class (@archi_mixin R c).
-Local Coercion base : class_of >-> NumClosedField.class_of.
-(*Local Coercion base2 : class_of >-> NumArchiDomain.class_of.*)
-Local Coercion base3 : class_of >-> NumArchiField.class_of.
+  Class { base : RealClosedField.class_of R; archi_mixin : @archimedean_axiom (num_for R base) }.
+Definition base2 R (c : class_of R) := RealArchiField.Class (@archi_mixin R c).
+Local Coercion base : class_of >-> RealClosedField.class_of.
+Local Coercion base2 : class_of >-> RealArchiField.class_of.
 
 Structure type := Pack {sort; _ : class_of sort; _ : Type}.
 Local Coercion sort : type >-> Sortclass.
@@ -1209,7 +1172,7 @@ Let xT := let: Pack T _ _ := cT in T.
 Notation xclass := (class : class_of xT).
 Definition clone c of phant_id class c := @Pack T c T.
 Definition pack b0 (m0 : archimedean_axiom (num_for T b0)) :=
-  fun bT b & phant_id (NumClosedField.class bT) b =>
+  fun bT b & phant_id (RealClosedField.class bT) b =>
   fun    m & phant_id m0 m => Pack (@Class T b m) T.
 
 Definition eqType := @Equality.Pack cT xclass xT.
@@ -1222,324 +1185,20 @@ Definition comUnitRingType := @GRing.ComUnitRing.Pack cT xclass xT.
 Definition idomainType := @GRing.IntegralDomain.Pack cT xclass xT.
 Definition numDomainType := @NumDomain.Pack cT xclass xT.
 Definition numArchiDomainType := @NumArchiDomain.Pack cT xclass xT.
-Definition fieldType := @GRing.Field.Pack cT xclass xT.
-Definition numFieldType := @NumField.Pack cT xclass xT.
-Definition numArchiFieldType := @NumArchiField.Pack cT xclass xT.
-Definition closedFieldType := @GRing.ClosedField.Pack cT xclass xT.
-Definition numClosedFieldType := @NumClosedField.Pack cT xclass xT.
-(*Definition join_numFieldType := @NumArchiDomain.Pack numFieldType xclass xT.*)
-
-End ClassDef.
-
-Module Exports.
-Coercion base : class_of >-> NumClosedField.class_of.
-Coercion base3 : class_of >-> NumArchiField.class_of.
-Coercion sort : type >-> Sortclass.
-Bind Scope ring_scope with sort.
-Coercion eqType : type >-> Equality.type.
-Canonical eqType.
-Coercion choiceType : type >-> Choice.type.
-Canonical choiceType.
-Coercion zmodType : type >-> GRing.Zmodule.type.
-Canonical zmodType.
-Coercion ringType : type >-> GRing.Ring.type.
-Canonical ringType.
-Coercion comRingType : type >-> GRing.ComRing.type.
-Canonical comRingType.
-Coercion unitRingType : type >-> GRing.UnitRing.type.
-Canonical unitRingType.
-Coercion comUnitRingType : type >-> GRing.ComUnitRing.type.
-Canonical comUnitRingType.
-Coercion idomainType : type >-> GRing.IntegralDomain.type.
-Canonical idomainType.
-Coercion numDomainType : type >-> NumDomain.type.
-Canonical numDomainType.
-Coercion numArchiDomainType : type >-> NumArchiDomain.type.
-Canonical numArchiDomainType.
-Coercion fieldType : type >-> GRing.Field.type.
-Canonical fieldType.
-Coercion numFieldType : type >-> NumField.type.
-Canonical numFieldType.
-Coercion numArchiFieldType : type >-> NumArchiField.type.
-Canonical numArchiFieldType.
-Coercion closedFieldType : type >-> GRing.ClosedField.type.
-Canonical closedFieldType.
-Coercion numClosedFieldType : type >-> NumClosedField.type.
-Canonical numClosedFieldType.
-Notation numArchiClosedFieldType := Num.NumArchiClosedField.type.
-Notation NumArchiClosedFieldType T m := (@pack T _ m _ _ id _ id).
-Notation "[ 'numArchiClosedFieldType' 'of' T 'for' cT ]" := (@clone T cT _ idfun)
-  (at level 0, format "[ 'numArchiClosedFieldType'  'of'  T  'for'  cT ]") : form_scope.
-Notation "[ 'numArchiClosedFieldType' 'of' T ]" :=  (@clone T _ _ id)
-  (at level 0, format "[ 'numArchiClosedFieldType'  'of'  T ]") : form_scope.
-End Exports.
-
-End NumArchiClosedField.
-Import NumArchiClosedField.Exports
-
-*)
-
-Section Tests.
-
-Section NDT.
-
-Variable R : numDomainType.
-
-Implicit Types x y : R.
-
-Lemma ler_def x y : (x <= y) = (`|y - x| == y - x).
-Proof. by case: R x y => ? [? []]. Qed.
-
-End NDT.
-
-Section NADT.
-
-Variable R : numArchiDomainType.
-
-Implicit Types x : R.
-
-
-
-Lemma archi_bound_subproof : archimedean_axiom R.
-Proof.
-by case: R => ? [].
-Qed.
-
-Lemma archi_bound x : exists ub, `|x| < ub%:R.
-Proof.
-by move: (archi_bound_subproof x).
-Qed. 
-
-
-End NADT.
-
-Section RDT.
-
-Lemma num_real_rd (R : realDomainType) (x : R) : x \is real.
-Proof. by case: R x => T []. Qed.
-
-
-End RDT.
-
-
-Variable R : realArchiDomainType.
-
-Implicit Types x y : R.
-
-(* Check iDomain *)
-Lemma mulf_eq0_nf x y : (x * y == 0) = (x == 0) || (y == 0).
-Proof.
-by rewrite (@mulf_eq0 R).
-Qed.
-
-(* Check NumDomain *)
-Lemma ler_def_nf x y : (x <= y) = (`|y - x| == y - x).
-Proof.
-rewrite ler_def.
-Set Printing All.
-by [].
-Qed.
-
-(* Check NumArchiDomain *)
-Lemma archi_bound_nf x : exists ub, `|x| < ub%:R.
-Proof.
-move: (archi_bound x).
-Set Printing All.
-by [].
-Qed.
-
-(* Check RealDomain *)
-Lemma num_real_nf x : x \is real.
-Proof.
-rewrite num_real_rd.
-Set Printing All.
-by [].
-Qed.
-
-
-
-
-
-
-
-End Tests.
-
-
-
-
-(*
-Module RealArchiDomain.
-
-Section ClassDef.
-
-
-Locate real_mixin.
-About RealDomain.real_mixin.
-
-About num_for.
-
-Record class_of (R : Type) : Type := Class {
-  base : NumArchiDomain.class_of R;
-  mixin : RealDomain.real_mixin (num_for R base)
-}.
-
-
-
-Local Coercion base : class_of >-> ComRing.class_of.
-Definition base2 R m := UnitRing.Class (@mixin R m).
-Local Coercion base2 : class_of >-> UnitRing.class_of.
-
-Structure type := Pack {sort; _ : class_of sort; _ : Type}.
-Local Coercion sort : type >-> Sortclass.
-Variables (T : Type) (cT : type).
-Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
-Let xT := let: Pack T _ _ := cT in T.
-Notation xclass := (class : class_of xT).
-
-Definition pack :=
-  fun bT b & phant_id (ComRing.class bT) (b : ComRing.class_of T) =>
-  fun mT m & phant_id (UnitRing.class mT) (@UnitRing.Class T b m) =>
-  Pack (@Class T b m) T.
-
-
-
-
-
-Record class_of R :=
-  Class { base : NumDomain.class_of R; 
-          archi_mixin : archimedean_axiom (num_for R base); 
-          real_mixin : real_axiom (num_for R base)}.
-Definition base2 R (c : class_of R) := NumArchiDomain.Class (@archi_mixin R c).
-Definition base3 R (c : class_of R) := RealDomain.Class (@real_mixin R c).
-Local Coercion base : class_of >-> NumDomain.class_of.
-Local Coercion base2 : class_of >-> NumArchiDomain.class_of.
-Local Coercion base3 : class_of >-> RealDomain.class_of.
-
-Structure type := Pack {sort; _ : class_of sort; _ : Type}.
-Local Coercion sort : type >-> Sortclass.
-Variables (T : Type) (cT : type).
-Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
-Let xT := let: Pack T _ _ := cT in T.
-Notation xclass := (class : class_of xT).
-Definition pack :=
-  fun bT b & phant_id (NumDomain.class bT)
-                      (b : NumDomain.class_of T) =>
-  fun mT m & phant_id (NumArchiDomain.class mT) (@NumArchiDomain.Class T b m) =>
-  fun mc md & phant_id (RealDomain.class mc) (@RealDomain.Class T b md)=> 
-    Pack (@Class T b m md) T. 
-
-Definition eqType := @Equality.Pack cT xclass xT.
-Definition choiceType := @Choice.Pack cT xclass xT.
-Definition zmodType := @GRing.Zmodule.Pack cT xclass xT.
-Definition ringType := @GRing.Ring.Pack cT xclass xT.
-Definition comRingType := @GRing.ComRing.Pack cT xclass xT.
-Definition unitRingType := @GRing.UnitRing.Pack cT xclass xT.
-Definition comUnitRingType := @GRing.ComUnitRing.Pack cT xclass xT.
-Definition idomainType := @GRing.IntegralDomain.Pack cT xclass xT.
-Definition numDomainType := @NumDomain.Pack cT xclass xT.
-Definition numArchiDomainType := @NumArchiDomain.Pack cT xclass xT.
 Definition realDomainType := @RealDomain.Pack cT xclass xT.
-Definition rajoin_numArchiDomainType := @NumArchiDomain.Pack numDomainType xclass xT.
-Definition rajoin_realDomainType := @RealDomain.Pack numDomainType xclass xT.
-Definition rajoin_numDomainType := @NumDomain.Pack numDomainType xclass xT.
-
-End ClassDef.
-
-Module Exports.
-Coercion base : class_of >-> NumDomain.class_of.
-Coercion base2 : class_of >-> NumArchiDomain.class_of.
-Coercion base3 : class_of >-> RealDomain.class_of.
-Coercion sort : type >-> Sortclass.
-Bind Scope ring_scope with sort.
-Coercion eqType : type >-> Equality.type.
-Canonical eqType.
-Coercion choiceType : type >-> Choice.type.
-Canonical choiceType.
-Coercion zmodType : type >-> GRing.Zmodule.type.
-Canonical zmodType.
-Coercion ringType : type >-> GRing.Ring.type.
-Canonical ringType.
-Coercion comRingType : type >-> GRing.ComRing.type.
-Canonical comRingType.
-Coercion unitRingType : type >-> GRing.UnitRing.type.
-Canonical unitRingType.
-Coercion comUnitRingType : type >-> GRing.ComUnitRing.type.
-Canonical comUnitRingType.
-Coercion idomainType : type >-> GRing.IntegralDomain.type.
-Canonical idomainType.
-Coercion numDomainType : type >-> NumDomain.type.
-Canonical numDomainType.
-Coercion numArchiDomainType : type >-> NumArchiDomain.type.
-Canonical numArchiDomainType.
-Coercion realDomainType : type >-> RealDomain.type.
-Canonical realDomainType.
-Canonical rajoin_numArchiDomainType.
-Canonical rajoin_realDomainType.
-Canonical rajoin_numDomainType.
-Notation realArchiDomainType := type.
-Notation "[ 'realArchiDomainType' 'of' T ]" := (@pack T _ _ id _ _ id _ _ id)
-  (at level 0, format "[ 'realArchiDomainType'  'of'  T ]") : form_scope.
-End Exports.
-
-End RealArchiDomain.
-Import RealArchiDomain.Exports.
-
-
-Module RealArchiField.
-
-Section ClassDef.
-
-Record class_of R :=
-  Class { base : NumField.class_of R; 
-          archi_mixin : archimedean_axiom (num_for R base); 
-          real_mixin : real_axiom (num_for R base)}.
-Definition base2 R (c : class_of R) := NumArchiField.Class (@archi_mixin R c).
-Definition base3 R (c : class_of R) := RealField.Class (@real_mixin R c). 
-Definition base4 R (c : class_of R) := RealArchiDomain.Class (@archi_mixin R c) (@real_mixin R c).
-Local Coercion base : class_of >-> NumField.class_of.
-Local Coercion base2 : class_of >-> NumArchiField.class_of.
-Local Coercion base3 : class_of >-> RealField.class_of.
-Local Coercion base4 : class_of >-> RealArchiDomain.class_of. 
-
-Structure type := Pack {sort; _ : class_of sort; _ : Type}.
-Local Coercion sort : type >-> Sortclass.
-Variables (T : Type) (cT : type).
-Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
-Let xT := let: Pack T _ _ := cT in T.
-Notation xclass := (class : class_of xT).
-Definition pack :=
-  fun bT b & phant_id (NumField.class bT)
-                      (b : NumField.class_of T) =>
-  fun mT m & phant_id (NumArchiField.class mT) (@NumArchiField.Class T b m) =>
-  fun mc md & phant_id (RealField.class mc) (@RealField.Class T b md)=> 
-    Pack (@Class T b m md) T.
-
-Definition eqType := @Equality.Pack cT xclass xT.
-Definition choiceType := @Choice.Pack cT xclass xT.
-Definition zmodType := @GRing.Zmodule.Pack cT xclass xT.
-Definition ringType := @GRing.Ring.Pack cT xclass xT.
-Definition comRingType := @GRing.ComRing.Pack cT xclass xT.
-Definition unitRingType := @GRing.UnitRing.Pack cT xclass xT.
-Definition comUnitRingType := @GRing.ComUnitRing.Pack cT xclass xT.
-Definition idomainType := @GRing.IntegralDomain.Pack cT xclass xT.
-Definition numDomainType := @NumDomain.Pack cT xclass xT.
-Definition numArchiDomainType := @NumArchiDomain.Pack cT xclass xT.
-Definition realDomainType := @RealDomain.Pack cT xclass xT.
+Definition realArchiDomainType := @RealArchiDomain.Pack cT xclass xT.
 Definition fieldType := @GRing.Field.Pack cT xclass xT.
 Definition numFieldType := @NumField.Pack cT xclass xT.
 Definition numArchiFieldType := @NumArchiField.Pack cT xclass xT.
 Definition realFieldType := @RealField.Pack cT xclass xT.
-Definition realArchiDomainType := @RealArchiDomain.Pack cT xclass xT.
-
-
+Definition realArchiFieldType := @RealArchiField.Pack cT xclass xT.
+Definition realClosedFieldType := @RealClosedField.Pack cT xclass xT.
 
 End ClassDef.
 
 Module Exports.
-Coercion base : class_of >-> NumField.class_of.
-Coercion base2 : class_of >-> NumArchiField.class_of.
-Coercion base3 : class_of >-> RealField.class_of.
-Coercion base4 : class_of >-> RealArchiDomain.class_of. 
+Coercion base : class_of >-> RealClosedField.class_of.
+Coercion base2 : class_of >-> RealArchiField.class_of.
 Coercion sort : type >-> Sortclass.
 Bind Scope ring_scope with sort.
 Coercion eqType : type >-> Equality.type.
@@ -1570,127 +1229,24 @@ Coercion fieldType : type >-> GRing.Field.type.
 Canonical fieldType.
 Coercion numFieldType : type >-> NumField.type.
 Canonical numFieldType.
-Coercion numArchiFieldType : type >-> NumArchiField.type.
-Canonical numArchiFieldType.
 Coercion realFieldType : type >-> RealField.type.
 Canonical realFieldType.
-Notation realArchiDomainType := type.
-Notation "[ 'realArchiDomainType' 'of' T ]" := (@pack T _ _ id _ _ id)
-  (at level 0, format "[ 'realArchiDomainType'  'of'  T ]") : form_scope.
-End Exports.
-
-End RealArchiField.
-Import RealArchiField.Exports.
-
-
-
-
-Module RealArchiClosedField.
-
-Section ClassDef.
-
-Record class_of R :=
-  Class { base : NumClosedField.class_of R; 
-          archi_mixin : archimedean_axiom (num_for R base); 
-          real_mixin : real_axiom (num_for R base)}.
-Definition base2 R (c : class_of R) := NumArchiClosedField.Class (@archi_mixin R c).
-
-About RealClosedField.Class.
-
-
-
-Definition base3 R (c : class_of R) := RealClosedField.Class (@real_mixin R c). 
-Definition base4 R (c : class_of R) := RealArchiField.Class (@archi_mixin R c) (@real_mixin R c).
-Local Coercion base : class_of >-> NumField.class_of.
-Local Coercion base2 : class_of >-> NumArchiField.class_of.
-Local Coercion base3 : class_of >-> RealField.class_of.
-Local Coercion base4 : class_of >-> RealArchiDomain.class_of. 
-
-Structure type := Pack {sort; _ : class_of sort; _ : Type}.
-Local Coercion sort : type >-> Sortclass.
-Variables (T : Type) (cT : type).
-Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
-Let xT := let: Pack T _ _ := cT in T.
-Notation xclass := (class : class_of xT).
-Definition pack :=
-  fun bT b & phant_id (NumField.class bT)
-                      (b : NumField.class_of T) =>
-  fun mT m & phant_id (NumArchiField.class mT) (@NumArchiField.Class T b m) =>
-  fun mc md & phant_id (RealField.class mc) (@RealField.Class T b md)=> 
-    Pack (@Class T b m md) T.
-
-Definition eqType := @Equality.Pack cT xclass xT.
-Definition choiceType := @Choice.Pack cT xclass xT.
-Definition zmodType := @GRing.Zmodule.Pack cT xclass xT.
-Definition ringType := @GRing.Ring.Pack cT xclass xT.
-Definition comRingType := @GRing.ComRing.Pack cT xclass xT.
-Definition unitRingType := @GRing.UnitRing.Pack cT xclass xT.
-Definition comUnitRingType := @GRing.ComUnitRing.Pack cT xclass xT.
-Definition idomainType := @GRing.IntegralDomain.Pack cT xclass xT.
-Definition numDomainType := @NumDomain.Pack cT xclass xT.
-Definition numArchiDomainType := @NumArchiDomain.Pack cT xclass xT.
-Definition realDomainType := @RealDomain.Pack cT xclass xT.
-Definition fieldType := @GRing.Field.Pack cT xclass xT.
-Definition numFieldType := @NumField.Pack cT xclass xT.
-Definition numArchiFieldType := @NumArchiField.Pack cT xclass xT.
-Definition realFieldType := @RealField.Pack cT xclass xT.
-Definition realArchiDomainType := @RealArchiDomain.Pack cT xclass xT.
-
-
-
-End ClassDef.
-
-Module Exports.
-Coercion base : class_of >-> NumField.class_of.
-Coercion base2 : class_of >-> NumArchiField.class_of.
-Coercion base3 : class_of >-> RealField.class_of.
-Coercion base4 : class_of >-> RealArchiDomain.class_of. 
-Coercion sort : type >-> Sortclass.
-Bind Scope ring_scope with sort.
-Coercion eqType : type >-> Equality.type.
-Canonical eqType.
-Coercion choiceType : type >-> Choice.type.
-Canonical choiceType.
-Coercion zmodType : type >-> GRing.Zmodule.type.
-Canonical zmodType.
-Coercion ringType : type >-> GRing.Ring.type.
-Canonical ringType.
-Coercion comRingType : type >-> GRing.ComRing.type.
-Canonical comRingType.
-Coercion unitRingType : type >-> GRing.UnitRing.type.
-Canonical unitRingType.
-Coercion comUnitRingType : type >-> GRing.ComUnitRing.type.
-Canonical comUnitRingType.
-Coercion idomainType : type >-> GRing.IntegralDomain.type.
-Canonical idomainType.
-Coercion numDomainType : type >-> NumDomain.type.
-Canonical numDomainType.
-Coercion numArchiDomainType : type >-> NumArchiDomain.type.
-Canonical numArchiDomainType.
-Coercion realDomainType : type >-> RealDomain.type.
-Canonical realDomainType.
-Coercion realArchiDomainType : type >-> RealArchiDomain.type.
-Canonical realArchiDomainType.
-Coercion fieldType : type >-> GRing.Field.type.
-Canonical fieldType.
-Coercion numFieldType : type >-> NumField.type.
-Canonical numFieldType.
 Coercion numArchiFieldType : type >-> NumArchiField.type.
 Canonical numArchiFieldType.
-Coercion realFieldType : type >-> RealField.type.
-Canonical realFieldType.
-Notation realArchiDomainType := type.
-Notation "[ 'realArchiDomainType' 'of' T ]" := (@pack T _ _ id _ _ id)
-  (at level 0, format "[ 'realArchiDomainType'  'of'  T ]") : form_scope.
+Coercion realArchiFieldType : type >-> RealArchiField.type.
+Canonical realArchiFieldType.
+Coercion realClosedFieldType : type >-> RealClosedField.type.
+Canonical realClosedFieldType.
+Notation realClosedArchiFieldType := Num.RealClosedArchiField.type.
+Notation RealClosedArchiFieldType T m := (@pack T _ m _ _ id _ id).
+Notation "[ 'realClosedArchiFieldType' 'of' T 'for' cT ]" := (@clone T cT _ idfun)
+  (at level 0, format "[ 'realClosedArchiFieldType'  'of'  T  'for'  cT ]") : form_scope.
+Notation "[ 'realClosedArchiFieldType' 'of' T ]" :=  (@clone T _ _ id)
+  (at level 0, format "[ 'realClosedArchiFieldType'  'of'  T ]") : form_scope.
 End Exports.
 
-End RealArchiClosedField.
-Import RealArchiClosedField.Exports.
-
-
-*)
-
-
+End RealClosedArchiField.
+Import RealClosedArchiField.Exports.
 
 
 (* The elementary theory needed to support the definition of the derived      *)
