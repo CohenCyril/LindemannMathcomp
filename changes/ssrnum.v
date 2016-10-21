@@ -18,79 +18,104 @@ Require Import bigop ssralg finset fingroup zmodp poly.
 (*    NumDomainType T m                                                       *)
 (*                  == packs the num mixin into a numberDomainType. The       *)
 (*                     carrier T must have a integral domain structure.       *)
-(*  [numDomainType of T for S ]                                               *)
-(*                  == T-clone of the numDomainType structure  S.             *)
-(*  [numDomainType of T]                                                      *)
-(*                 == clone of a canonical numDomainType structure on T.      *)
+(*   [numDomainType of T for S ]                                              *)
+(*                  == T-clone of the numDomainType structure S.              *)
+(*   [numDomainType of T]                                                     *)
+(*                  == clone of a canonical numDomainType structure on T.     *)
 (*                                                                            *)
 (*   * NumField (Field with an order and a norm)                              *)
-(*    numFieldType == interface for a num field.                              *)
-(*  [numFieldType of T]                                                       *)
-(*                  == clone of a canonical numFieldType structure on T       *)
-(*                                                                            *)
-(*   * NumArchiField (Field with an order and a norm)                         *)
-(*    numArchiFieldType == interface for a num field.                         *)
-(*  [numArchiFieldType of T]                                                  *)
-(*                  == clone of a canonical numFieldType structure on T       *)
+(*     numFieldType == interface for a num field.                             *)
+(*    [numFieldType of T]                                                     *)
+(*                  == clone of a canonical numFieldType structure on T.      *)
 (*                                                                            *)
 (*   * NumClosedField (Partially ordered Closed Field with conjugation)       *)
-(*    numClosedFieldType       == interface for a closed field with conj.     *)
-(*  NumClosedFieldType T r    == packs the real closed axiom r into a         *)
-(*                     numClosedFieldType. The  carrier T must have a closed  *)
-(*                     field type structure.                                  *)
-(*  [numClosedFieldType of T]  == clone of a canonical numClosedFieldType     *)
-(*                               structure on  T                              *)
+(*     numClosedFieldType                                                     *)
+(*                  == interface for a closed field with conj.                *)
+(*     NumClosedFieldType T r                                                 *)
+(*                  == packs the real closed axiom r into a                   *)
+(*                     numClosedFieldType. The carrier T must have a          *)
+(*                     closed field type structure.                           *)
+(*    [numClosedFieldType of T]                                               *)
+(*                  == clone of a canonical numClosedFieldType structure      *)
+(*                     on T.                                                  *)
 (*  [numClosedFieldType of T for S ]                                          *)
-(*                  == T-clone of the realClosedFieldType structure  S.       *)
-(*                                                                            *)
-(*   * NumClosedArchiField (Partially ordered Closed Field with conjugation)       *)
-(*    numClosedArchiFieldType       == interface for a closed field with conj.     *)
-(*  NumClosedArchiFieldType T r    == packs the real closed axiom r into a         *)
-(*                     numClosedFieldType. The  carrier T must have a closed  *)
-(*                     field type structure.                                  *)
-(*  [numClosedArchiFieldType of T]  == clone of a canonical numClosedFieldType     *)
-(*                               structure on  T                              *)
-(*  [numClosedFieldType of T for S ]                                          *)
-(*                  == T-clone of the realClosedFieldType structure  S.       *)
-(*                                                                            *)
+(*                  == T-clone of the realClosedFieldType structure S.        *)
 (*                                                                            *)
 (*   * RealDomain  (Num domain where all elements are positive or negative)   *)
 (*   realDomainType == interface for a real integral domain.                  *)
 (*   RealDomainType T r                                                       *)
-(*                  == packs the  real axiom r into a realDomainType. The     *)
+(*                  == packs the real axiom r into a realDomainType. The      *)
 (*                     carrier T must have a num domain structure.            *)
 (*  [realDomainType of T for S ]                                              *)
-(*                  == T-clone of the realDomainType structure  S.            *)
+(*                  == T-clone of the realDomainType structure S.             *)
 (*  [realDomainType of T]                                                     *)
 (*                  == clone of a canonical realDomainType structure on T.    *)
 (*                                                                            *)
 (*   * RealField (Num Field where all elements are positive or negative)      *)
 (*    realFieldType == interface for a real field.                            *)
-(*  [realFieldType of T]                                                      *)
-(*                  == clone of a canonical realFieldType structure on T      *)
-(*                                                                            *)
-(*   * RealArchiField (A Real Field with the archimedean axiom)               *)
-(*  realArchiFieldType  == interface for an archimedean field.                *)
-(*   RealArchiFieldType T r                                                   *)
-(*                  == packs the archimeadean axiom r into an archiFieldType. *)
-(*                     The  carrier T must have a real field type structure.  *)
-(*  [realArchiFieldType of T for S ]                                          *)
-(*                  == T-clone of the archiFieldType structure  S.            *)
-(*  [realArchiFieldType of T]                                                 *)
-(*                  == clone of a canonical archiFieldType structure on T     *)
-(*                                                                            *)
-
-(*                                                                            *)
+(*   [realFieldType of T]                                                     *)
+(*                  == clone of a canonical realFieldType structure on T.     *)
 (*                                                                            *)
 (*   * RealClosedField (Real Field with the real closed axiom)                *)
-(*    rcfType       == interface for a real closed field.                     *)
-(*   RcfType T r    == packs the real closed axiom r into a                   *)
-(*                     rcfType. The  carrier T must have a real               *)
-(*                     field type structure.                                  *)
-(*  [rcfType of T]  == clone of a canonical realClosedFieldType structure on  *)
-(*                     T.                                                     *)
-(*  [rcfType of T for S ]                                                     *)
-(*                  == T-clone of the realClosedFieldType structure  S.       *)
+(*          rcfType == interface for a real closed field.                     *)
+(*          RcfType T r                                                       *)
+(*                  == packs the real closed axiom r into a rcfType.          *)
+(*                     The carrier T must have a real field type structure.   *)
+(*         [rcfType of T]                                                     *)
+(*                  == clone of a canonical realClosedFieldType structure     *)
+(*                     on T.                                                  *)
+(*         [rcfType of T for S ]                                              *)
+(*                  == T-clone of the realClosedFieldType structure S.        *)
+(*                                                                            *)
+(*   * NumArchiDomain (Num Domain with the archimedean axiom)                 *)
+(*     numArchiDomainType                                                     *)
+(*                  == interface for an archimedean num domain.               *)
+(*     NumArchiDomainType T r                                                 *)
+(*                  == packs the archimeadean axiom r into a                  *)
+(*                     NumArchiDomainType. The carrier T must have a num      *)
+(*                     domain type structure.                                 *)
+(*    [numArchiDomainType of T for S ]                                        *)
+(*                  == T-clone of the numArchiDomainType structure  S.        *)
+(*    [numArchiDomainType of T]                                               *)
+(*                  == clone of a canonical numArchiDomainType structure      *)
+(*                     on T.                                                  *)
+(*                                                                            *)
+(*   * NumArchiField (Archimedean Field with an order and a norm)             *)
+(*     numArchiFieldType                                                      *)
+(*                  == interface for a num archimedean field.                 *)
+(*    [numArchiFieldType of T]                                                *)
+(*                  == clone of a canonical numArchiFieldType structure on T. *)
+(*                                                                            *)
+(*   * NumArchiClosedField (Archimedean Closed Field with an order and a norm)*)
+(*     numArchiClosedFieldType                                                *)
+(*                  == interface for a num archimedean closed field.          *)
+(*    [numArchiClosedFieldType of T]                                          *)
+(*                  == clone of a canonical numArchiClosedFieldType           *)
+(*                     structure on T.                                        *)
+(*                                                                            *)
+(*   * RealArchiDomain (Archimedean Real Domain)                              *)
+(*     realArchiDomainType                                                    *)
+(*                  == interface for a real archimedean domain.               *)
+(*    [realArchiDomainType of T]                                              *)
+(*                  == clone of a canonical realArchiDomainType structure     *)
+(*                     on T.                                                  *)
+(*                                                                            *)
+(*   * RealArchiField (Archimedean Real Field)                                *)
+(*     realArchiFieldType                                                     *)
+(*                  == interface for a real archimedean field.                *)
+(*    [realArchiFieldType of T]                                               *)
+(*                  == clone of a canonical realArchiFieldType structure      *)
+(*                     on T.                                                  *)
+(*                                                                            *)
+(*   * RealClosedArchiField (Real Closed Archimedean Field)                   *)
+(*     realClosedArchiFieldType                                               *)
+(*                  == interface for a real closed archimedean field.         *)
+(*    [realClosedArchiFieldType of T]                                         *)
+(*                  == clone of a canonical realClosedArchiFieldType          *)
+(*                     structure on T.                                        *)
+(*                                                                            *)
+(*                                                                            *)
+
 (*                                                                            *)
 (*                                                                            *)
 (*                                                                            *)
@@ -914,10 +939,10 @@ Variables (T : Type) (cT : type).
 Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
 Let xT := let: Pack T _ _ := cT in T.
 Notation xclass := (class : class_of xT).
-Definition clone c of phant_id class c := @Pack T c T.
-Definition pack b0 (m0 : archimedean_axiom (num_for T b0)) :=
-  fun bT b & phant_id (NumClosedField.class bT) b =>
-  fun    m & phant_id m0 m => Pack (@Class T b m) T.
+Definition pack :=
+  fun bT b & phant_id (NumClosedField.class bT) (b : NumClosedField.class_of T) =>
+  fun mT m & phant_id (NumArchiDomain.class mT) (@NumArchiDomain.Class T b m)
+  => Pack (@Class T b m) T.
 
 Definition eqType := @Equality.Pack cT xclass xT.
 Definition choiceType := @Choice.Pack cT xclass xT.
@@ -972,11 +997,8 @@ Coercion closedFieldType : type >-> GRing.ClosedField.type.
 Canonical closedFieldType.
 Coercion numClosedFieldType : type >-> NumClosedField.type.
 Canonical numClosedFieldType.
-Notation numArchiClosedFieldType := Num.NumArchiClosedField.type.
-Notation NumArchiClosedFieldType T m := (@pack T _ m _ _ id _ id).
-Notation "[ 'numArchiClosedFieldType' 'of' T 'for' cT ]" := (@clone T cT _ idfun)
-  (at level 0, format "[ 'numArchiClosedFieldType'  'of'  T  'for'  cT ]") : form_scope.
-Notation "[ 'numArchiClosedFieldType' 'of' T ]" :=  (@clone T _ _ id)
+Notation numArchiClosedFieldType := type.
+Notation "[ 'numArchiClosedFieldType' 'of' T ]" :=  (@pack T _ _ id _ _ id)
   (at level 0, format "[ 'numArchiClosedFieldType'  'of'  T ]") : form_scope.
 End Exports.
 
@@ -1080,10 +1102,10 @@ Variables (T : Type) (cT : type).
 Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
 Let xT := let: Pack T _ _ := cT in T.
 Notation xclass := (class : class_of xT).
-Definition clone c of phant_id class c := @Pack T c T.
-Definition pack b0 (m0 : archimedean_axiom (num_for T b0)) :=
-  fun bT b & phant_id (NumField.class bT) b =>
-  fun    m & phant_id m0 m => Pack (@Class T b m) T.
+Definition pack :=
+  fun bT b & phant_id (RealField.class bT) (b : RealField.class_of T) =>
+  fun mT m & phant_id (NumArchiDomain.class mT) (@NumArchiDomain.Class T b m)
+  => Pack (@Class T b m) T.
 
 Definition eqType := @Equality.Pack cT xclass xT.
 Definition choiceType := @Choice.Pack cT xclass xT.
@@ -1170,10 +1192,10 @@ Variables (T : Type) (cT : type).
 Definition class := let: Pack _ c _ as cT' := cT return class_of cT' in c.
 Let xT := let: Pack T _ _ := cT in T.
 Notation xclass := (class : class_of xT).
-Definition clone c of phant_id class c := @Pack T c T.
-Definition pack b0 (m0 : archimedean_axiom (num_for T b0)) :=
-  fun bT b & phant_id (RealClosedField.class bT) b =>
-  fun    m & phant_id m0 m => Pack (@Class T b m) T.
+Definition pack :=
+  fun bT b & phant_id (RealClosedField.class bT) (b : RealClosedField.class_of T) =>
+  fun mT m & phant_id (NumArchiDomain.class mT) (@NumArchiDomain.Class T b m)
+  => Pack (@Class T b m) T.
 
 Definition eqType := @Equality.Pack cT xclass xT.
 Definition choiceType := @Choice.Pack cT xclass xT.
@@ -1238,10 +1260,7 @@ Canonical realArchiFieldType.
 Coercion realClosedFieldType : type >-> RealClosedField.type.
 Canonical realClosedFieldType.
 Notation realClosedArchiFieldType := Num.RealClosedArchiField.type.
-Notation RealClosedArchiFieldType T m := (@pack T _ m _ _ id _ id).
-Notation "[ 'realClosedArchiFieldType' 'of' T 'for' cT ]" := (@clone T cT _ idfun)
-  (at level 0, format "[ 'realClosedArchiFieldType'  'of'  T  'for'  cT ]") : form_scope.
-Notation "[ 'realClosedArchiFieldType' 'of' T ]" :=  (@clone T _ _ id)
+Notation "[ 'realClosedArchiFieldType' 'of' T ]" :=  (@pack T _ _ id _ _ id)
   (at level 0, format "[ 'realClosedArchiFieldType'  'of'  T ]") : form_scope.
 End Exports.
 
@@ -5243,16 +5262,21 @@ apply: (ltr_trans le_x_b _ ).
 by rewrite -natrX ltr_nat (leq_ltn_trans le_b_i) // ltn_expl.
 Qed.
 
-(* TODO : analogue de upper_nthroot_normP pour un realArchiDomainType
-Lemma upper_nthrootP i : (bound x <= i)%N -> x < 2%:R ^+ i.
-Proof.
-rewrite /bound; case: (sigW _) => /= b le_x_b le_b_i.
-apply: ler_lt_trans (ler_norm x) (ltr_trans le_x_b _ ).
-by rewrite -natrX ltr_nat (leq_ltn_trans le_b_i) // ltn_expl.
-Qed.
-*)
-
 End NumArchimedeanTheory.
+
+Section RealArchimedeanTheory.
+
+Variables (C : realArchiDomainType) (x : C).
+
+
+(* TODO : analogue de upper_nthroot_normP pour un realArchiDomainType *)
+Lemma upper_nthrootP i : (bound x <= i)%N -> x < 2%:R ^+ i.
+Proof. 
+move/upper_nthroot_normP => H.
+by apply (ler_lt_trans (ler_norm _) H).
+Qed.
+
+End RealArchimedeanTheory.
 
 Section NumArchiDomainTheory.
 
@@ -5260,7 +5284,7 @@ Variable R : numArchiDomainType.
 Implicit Types x y z : R.
 Implicit Types m n : nat.
 
-Fact truncC_subproof x : {m | x >= 0 -> m%:R <= x < m.+1%:R }.
+Fact truncS_subproof x : {m | x >= 0 -> m%:R <= x < m.+1%:R }.
 Proof.
 have [Rx | _] := boolP (x >= 0); last by exists 0%N.
 have /ex_minnP[n lt_x_n1 min_n]: exists n, x < n.+1%:R; last first.
@@ -5272,117 +5296,107 @@ exists (archi_bound x); apply: (ltr_trans (archi_boundP Rx)).
 by rewrite ltr_nat.
 Qed.
 
-Definition truncC x := sval (truncC_subproof x).
-Definition Cnat : pred_class := fun x => (truncC x)%:R == x.
+Definition truncS x := sval (truncS_subproof x).
+Definition Snat : pred_class := fun x => (truncS x)%:R == x.
 
-Lemma truncC_itv x : 0 <= x -> (truncC x)%:R <= x < (truncC x).+1%:R.
-Proof. by rewrite /truncC => Rx; case: (truncC_subproof x) => //= m; apply. Qed.
+Lemma truncS_itv x : 0 <= x -> (truncS x)%:R <= x < (truncS x).+1%:R.
+Proof. by rewrite /truncS => Rx; case: (truncS_subproof x) => //= m; apply. Qed.
 
-Lemma truncC_def x n : n%:R <= x < n.+1%:R -> truncC x = n.
+Lemma truncS_def x n : n%:R <= x < n.+1%:R -> truncS x = n.
 Proof.
 case/andP=> lemx ltxm1; apply/eqP; rewrite eqn_leq -ltnS -[(n <= _)%N]ltnS.
-have /truncC_itv/andP[lefx ltxf1]: x >= 0.
+have /truncS_itv/andP[lefx ltxf1]: x >= 0.
   by apply: (ler_trans _ lemx); apply: ler0n.
 by rewrite -!(ltr_nat R) 2?(@ler_lt_trans _ x).
 Qed.
 
-Lemma natCK : cancel (GRing.natmul 1) truncC.
+Lemma SnatCK : cancel (GRing.natmul 1) truncS.
 Proof.
-by move=> m; apply: truncC_def; rewrite ler_nat ltr_nat ltnS leqnn.
+by move=> m; apply: truncS_def; rewrite ler_nat ltr_nat ltnS leqnn.
 Qed.
 
-Lemma truncCK : {in Cnat, cancel truncC (GRing.natmul 1)}.
+Lemma truncSK : {in Snat, cancel truncS (GRing.natmul 1)}.
 Proof. by move=> x /eqP. Qed.
 
-Lemma truncC0 : truncC 0 = 0%N. Proof. exact: (natCK 0%N). Qed.
-Lemma truncC1 : truncC 1 = 1%N. Proof. exact: (natCK 1%N). Qed.
-Hint Resolve truncC0 truncC1.
+Lemma truncS0 : truncS 0 = 0%N. Proof. exact: (SnatCK 0%N). Qed.
+Lemma truncS1 : truncS 1 = 1%N. Proof. exact: (SnatCK 1%N). Qed.
+Hint Resolve truncS0 truncS1.
 
-Lemma CnatP x : reflect (exists n, x = n%:R) (x \in Cnat).
+Lemma SnatP x : reflect (exists n, x = n%:R) (x \in Snat).
 Proof.
-by apply: (iffP eqP) => [<- | [n ->]]; [exists (truncC x) | rewrite natCK].
+by apply: (iffP eqP) => [<- | [n ->]]; [exists (truncS x) | rewrite SnatCK].
 Qed.
 
-Lemma Cnat_nat n : n%:R \in Cnat. Proof. by apply/CnatP; exists n. Qed.
+Lemma Snat_nat n : n%:R \in Snat. Proof. by apply/SnatP; exists n. Qed.
 
-Lemma truncCD :
-  {in Cnat & Num.nneg, {morph truncC : x y / x + y >-> (x + y)%N}}.
+Lemma truncSD :
+  {in Snat & Num.nneg, {morph truncS : x y / x + y >-> (x + y)%N}}.
 Proof.
-move=> _ y /CnatP[n ->] y_ge0; apply: truncC_def.
-by rewrite -addnS !natrD !natCK ler_add2l ltr_add2l truncC_itv.
+move=> _ y /SnatP[n ->] y_ge0; apply: truncS_def.
+by rewrite -addnS !natrD !SnatCK ler_add2l ltr_add2l truncS_itv.
 Qed.
 
-Lemma truncCM : {in Cnat &, {morph truncC : x y / x * y >-> (x * y)%N}}.
-Proof. by move=> _ _ /CnatP[n1 ->] /CnatP[n2 ->]; rewrite -natrM !natCK. Qed.
+Lemma truncSM : {in Snat &, {morph truncS : x y / x * y >-> (x * y)%N}}.
+Proof. by move=> _ _ /SnatP[n1 ->] /SnatP[n2 ->]; rewrite -natrM !SnatCK. Qed.
 
-Lemma truncCX n : {in Cnat, {morph truncC : x / x ^+ n >-> (x ^ n)%N}}.
-Proof. by move=> _ /CnatP[n1 ->]; rewrite -natrX !natCK. Qed.
+Lemma truncSX n : {in Snat, {morph truncS : x / x ^+ n >-> (x ^ n)%N}}.
+Proof. by move=> _ /SnatP[n1 ->]; rewrite -natrX !SnatCK. Qed.
 
-Lemma rpred_Cnat S (ringS : semiringPred S) (kS : keyed_pred ringS) x :
-  x \in Cnat -> x \in kS.
-Proof. by case/CnatP=> n ->; apply: rpred_nat. Qed.
+Lemma rpred_Snat S (ringS : semiringPred S) (kS : keyed_pred ringS) x :
+  x \in Snat -> x \in kS.
+Proof. by case/SnatP=> n ->; apply: rpred_nat. Qed.
 
-Lemma Cnat0 : 0 \in Cnat. Proof. exact: (Cnat_nat 0). Qed.
-Lemma Cnat1 : 1 \in Cnat. Proof. exact: (Cnat_nat 1). Qed.
-Hint Resolve Cnat_nat Cnat0 Cnat1.
+Lemma Snat0 : 0 \in Snat. Proof. exact: (Snat_nat 0). Qed.
+Lemma Snat1 : 1 \in Snat. Proof. exact: (Snat_nat 1). Qed.
+Hint Resolve Snat_nat Snat0 Snat1.
 
-Fact Cnat_key : pred_key Cnat. Proof. by []. Qed.
-Fact Cnat_semiring : semiring_closed Cnat.
+Fact Snat_key : pred_key Snat. Proof. by []. Qed.
+Fact Snat_semiring : semiring_closed Snat.
 Proof.
-by do 2![split] => //= _ _ /CnatP[n ->] /CnatP[m ->]; rewrite -(natrD, natrM).
+by do 2![split] => //= _ _ /SnatP[n ->] /SnatP[m ->]; rewrite -(natrD, natrM).
 Qed.
-Canonical Cnat_keyed := KeyedPred Cnat_key.
-Canonical Cnat_addrPred := AddrPred Cnat_semiring.
-Canonical Cnat_mulrPred := MulrPred Cnat_semiring.
-Canonical Cnat_semiringPred := SemiringPred Cnat_semiring.
+Canonical Snat_keyed := KeyedPred Snat_key.
+Canonical Snat_addrPred := AddrPred Snat_semiring.
+Canonical Snat_mulrPred := MulrPred Snat_semiring.
+Canonical Snat_semiringPred := SemiringPred Snat_semiring.
 
-Lemma Creal_Cnat : {subset Cnat <= real}.
-Proof. move=> _ /CnatP[m ->]; apply: realn. Qed.
+Lemma Creal_Snat : {subset Snat <= real}.
+Proof. move=> _ /SnatP[m ->]; apply: realn. Qed.
 
-Lemma Cnat_normK x : x \in Cnat -> `|x| ^+ 2 = x ^+ 2.
-Proof. by move/Creal_Cnat/real_normK. Qed.
+Lemma Snat_normK x : x \in Snat -> `|x| ^+ 2 = x ^+ 2.
+Proof. by move/Creal_Snat/real_normK. Qed.
 
-Lemma CnatEsign x : x \in Cnat -> x = (-1) ^+ (x < 0)%R * `|x|.
-Proof. by move/Creal_Cnat/realEsign. Qed.
+Lemma SnatEsign x : x \in Snat -> x = (-1) ^+ (x < 0)%R * `|x|.
+Proof. by move/Creal_Snat/realEsign. Qed.
 
-Eval simpl in (truncC (GRing.opp 1)).
-
-
-Lemma truncC_ge1 x : 0 <= x -> (0 < truncC x)%N -> (1 <= x).
+Lemma truncS_ge1 x : 0 <= x -> (0 < truncS x)%N -> (1 <= x).
 Proof.
 move=> x_ge0 m_gt0.
-move/truncC_itv/andP : x_ge0 => [lemx _].
+move/truncS_itv/andP : x_ge0 => [lemx _].
 by apply: ler_trans lemx; rewrite ler1n.
 Qed.
 
-Lemma truncC_gt0 x : (1 <= x) -> (0 < truncC x)%N.
+Lemma truncS_gt0 x : (1 <= x) -> (0 < truncS x)%N.
 Proof.
 move=> x_ge1; rewrite -ltnS.
-move: (ler_trans ler01 x_ge1) => /truncC_itv/andP[_ ] /(ler_lt_trans x_ge1) {x_ge1}.
+move: (ler_trans ler01 x_ge1) => /truncS_itv/andP[_ ] /(ler_lt_trans x_ge1) {x_ge1}.
 by have H : (1 : R) = 1%N %:R; first by []; rewrite [X in X < _]H ltr_nat.
 Qed.
 
-(*
-Lemma truncC0Pn x : reflect (truncC x = 0%N) (~~ (1 <= x)).
-Proof. by rewrite -truncC_gt0 -eqn0Ngt; apply: eqP. Qed.
-*)
+Lemma Snat_ge0 x : x \in Snat -> 0 <= x.
+Proof. by case/SnatP=> n ->; apply: ler0n. Qed.
 
-Lemma Cnat_ge0 x : x \in Cnat -> 0 <= x.
-Proof. by case/CnatP=> n ->; apply: ler0n. Qed.
+Lemma Snat_gt0 x : x \in Snat -> (0 < x) = (x != 0).
+Proof. by case/SnatP=> n ->; rewrite pnatr_eq0 ltr0n lt0n. Qed.
 
-Lemma Cnat_gt0 x : x \in Cnat -> (0 < x) = (x != 0).
-Proof. by case/CnatP=> n ->; rewrite pnatr_eq0 ltr0n lt0n. Qed.
+Lemma norm_Snat x : x \in Snat -> `|x| = x.
+Proof. by move/Snat_ge0/ger0_norm. Qed.
 
-Lemma norm_Cnat x : x \in Cnat -> `|x| = x.
-Proof. by move/Cnat_ge0/ger0_norm. Qed.
-
-
-
-Lemma Cnat_sum_eq1 (I : finType) (P : pred I) (F : I -> R) :
-     (forall i, P i -> F i \in Cnat) -> \sum_(i | P i) F i = 1 ->
+Lemma Snat_sum_eq1 (I : finType) (P : pred I) (F : I -> R) :
+     (forall i, P i -> F i \in Snat) -> \sum_(i | P i) F i = 1 ->
    {i : I | [/\ P i, F i = 1 & forall j, j != i -> P j -> F j = 0]}.
 Proof.
-move=> natF sumF1; pose nF i := truncC (F i).
+move=> natF sumF1; pose nF i := truncS (F i).
 have{natF} defF i: P i -> F i = (nF i)%:R by move/natF/eqP.
 have{sumF1} /eqP sumF1: (\sum_(i | P i) nF i == 1)%N.
   by rewrite -(@eqr_nat R) natr_sum -(eq_bigr _ defF) sumF1.
@@ -5395,167 +5409,24 @@ exists i; split=> // [|j neq_ji Pj]; first by rewrite defF // -Fi1.
 by rewrite defF // (eqP (Fi'0 j _)) // neq_ji.
 Qed.
 
-Lemma Cnat_mul_eq1 x y :
-  x \in Cnat -> y \in Cnat -> (x * y == 1) = (x == 1) && (y == 1).
-Proof. by do 2!move/truncCK <-; rewrite -natrM !pnatr_eq1 muln_eq1. Qed.
+Lemma Snat_mul_eq1 x y :
+  x \in Snat -> y \in Snat -> (x * y == 1) = (x == 1) && (y == 1).
+Proof. by do 2!move/truncSK <-; rewrite -natrM !pnatr_eq1 muln_eq1. Qed.
 
-Lemma Cnat_prod_eq1 (I : finType) (P : pred I) (F : I -> R) :
-    (forall i, P i -> F i \in Cnat) -> \prod_(i | P i) F i = 1 ->
+Lemma Snat_prod_eq1 (I : finType) (P : pred I) (F : I -> R) :
+    (forall i, P i -> F i \in Snat) -> \prod_(i | P i) F i = 1 ->
   forall i, P i -> F i = 1.
 Proof.
 move=> natF prodF1; apply/eqfun_inP; rewrite -big_andE.
-move: prodF1; elim/(big_load (fun x => x \in Cnat)): _.
+move: prodF1; elim/(big_load (fun x => x \in Snat)): _.
 elim/big_rec2: _ => // i all1x x /natF N_Fi [Nx x1all1].
-by split=> [|/eqP]; rewrite ?rpredM ?Cnat_mul_eq1 // => /andP[-> /eqP].
+by split=> [|/eqP]; rewrite ?rpredM ?Snat_mul_eq1 // => /andP[-> /eqP].
 Qed.
-
-
-
-
 
 End NumArchiDomainTheory.
 
-
-Section NumArchiDomainVerif.
-
-Variable R : numArchiDomainType.
-
-Implicit Type x : R.
-
-(* Check iDomain *)
-Lemma mulf_eq0_ad x y : (x * y == 0) = (x == 0) || (y == 0).
-Proof.
-by rewrite mulf_eq0.
-Qed.
-
-(* Check numDomain *)
-Lemma normr_ge0_ad x : 0 <= `|x|.
-Proof.
-apply: normr_ge0.
-Qed.
-
-(* Check numArchiDomain *)
-Lemma Cnat_ge0_ad x : x \in (@Cnat R) -> 0 <= x.
-Proof.
-apply: Cnat_ge0.
-Qed.
-
-End NumArchiDomainVerif.
-
-(*
-Lemma ThSuitesAdh (A : nat -> R) (B : nat -> R) :
-  (forall n : nat, A n <= A n.+1) -> (forall n : nat, B n <= B n.+1)
-  -> (forall n : nat, (B n - A n) *+ n <= 1) -> 
-  exists (x : R), (forall n : nat, A n <= x <= B n). 
-*)
-
-Section NumArchiFieldVerif.
-
-Variable R : numArchiFieldType.
-
-Implicit Type x : R.
-
-(* Check iDomain *)
-Lemma mulf_eq0_af x y : (x * y == 0) = (x == 0) || (y == 0).
-Proof.
-rewrite (@mulf_eq0 R).
-Set Printing All.
-by [].
-Qed.
-
-(* Check numDomain *)
-Lemma normr_ge0_af x : 0 <= `|x|.
-Proof.
-apply: normr_ge0.
-Qed.
-
-(* Check numArchiDomain *)
-Lemma Cnat_ge0_af x : x \in (@Cnat R) -> 0 <= x.
-Proof.
-apply: Cnat_ge0.
-Qed.
-
-(* Check GRing.Field *)
-Lemma unitfE_af x : (x \is a GRing.unit) = (x != 0).
-Proof.
-move: (@unitfE R x).
-Set Printing All.
-by [].
-Qed.
-
-
-(* Check numField *)
-Lemma unitf_gt0_af x : 0 < x -> x \is a GRing.unit.
-Proof.
-move=> x_ge0.
-move: (@unitf_gt0 _ x) => H.
-by apply: H.
-Qed.
-
-End NumArchiFieldVerif.
-
-Section NumArchiClosedFieldVerif.
-
-Variable R : numArchiClosedFieldType.
-
-Implicit Type x y : R.
-
-(* Check iDomain *)
-Lemma mulf_eq0_acf x y : (x * y == 0) = (x == 0) || (y == 0).
-Proof.
-rewrite (@mulf_eq0 R).
-Set Printing All.
-by [].
-Qed.
-
-(* Check numDomain *)
-Lemma normr_ge0_acf x : 0 <= `|x|.
-Proof.
-apply: normr_ge0.
-Qed.
-
-(* Check numArchiDomain *)
-Lemma Cnat_ge0_acf x : x \in (@Cnat R) -> 0 <= x.
-Proof.
-apply: Cnat_ge0.
-Qed.
-
-(* Check GRing.Field *)
-Lemma unitfE_acf x : (x \is a GRing.unit) = (x != 0).
-Proof.
-move: (@unitfE R x).
-Set Printing All.
-by [].
-Qed.
-
-(* Check numField *)
-Lemma unitf_gt0_acf x : 0 < x -> x \is a GRing.unit.
-Proof.
-move=> x_ge0.
-move: (@unitf_gt0 _ x) => H.
-by apply: H.
-Qed.
-
-(* Check numArchiField *)
-Lemma unitf_gt0_acf2 x : 0 < x -> x \is a GRing.unit.
-Proof.
-move=> x_ge0.
-move: (@unitf_gt0_af _ x) => H.
-by apply: H.
-Qed.
-
-(* Check numClosedField *)
-Lemma normC_sub_eq_acf x y :
-  `|x - y| = `|x| - `|y| -> {t | `|t| == 1 & (x, y) = (`|x| * t, `|y| * t)}.
-Proof.
-by apply: normC_sub_eq.
-Qed.
-
-
-
-End NumArchiClosedFieldVerif.
-
 End Theory.
+
 
 Module RealMixin.
 
@@ -5690,7 +5561,9 @@ End Num.
 Export Num.NumDomain.Exports Num.NumField.Exports Num.NumClosedField.Exports.
 Export Num.RealDomain.Exports Num.RealField.Exports.
 Export Num.NumArchiDomain.Exports Num.RealClosedField.Exports.
-Export Num.Syntax Num.PredInstances.
+Export Num.NumArchiField.Exports Num.NumArchiClosedField.Exports.
+Export Num.RealArchiDomain.Exports Num.RealArchiField.Exports.
+Export Num.RealClosedArchiField.Exports Num.Syntax Num.PredInstances.
 
 Notation RealLeMixin := Num.RealMixin.Le.
 Notation RealLtMixin := Num.RealMixin.Lt.

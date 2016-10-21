@@ -22,8 +22,8 @@ Require Import Rdefinitions Raxioms RIneq Rbasic_fun Zwf.
 Require Import Epsilon FunctionalExtensionality Ranalysis1 Rsqrt_def.
 Require Import Rtrigo1 Reals.
 From mathcomp Require Import ssreflect ssrfun ssrbool eqtype ssrnat seq.
-From mathcomp Require Import choice bigop ssrnum ssralg fintype poly.
-From mathcomp Require Import mxpoly.
+From mathcomp Require Import choice bigop ssralg fintype poly.
+From mathcomp Require Import mxpoly ssrnum.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -256,12 +256,11 @@ Proof.
 case: (Rle_dec 0 x)=> [/RlebP ->|] //.
 by move/Rnot_le_lt/Rlt_le/RlebP=> ->; rewrite orbT.
 Qed.
- 
+
 Canonical Structure R_realDomainType := RealDomainType R Rreal_axiom.
- 
 Canonical Structure R_realFieldType := [realFieldType of R].
- 
-Lemma Rarchimedean_axiom : Num.archimedean_axiom R_realFieldType.
+
+Lemma Rarchimedean_axiom : Num.archimedean_axiom R_numDomainType.
 Proof.
 move=> x; exists (Zabs_nat (up x) + 2)%N.
 have [Hx1 Hx2]:= (archimed x).
@@ -302,8 +301,12 @@ apply: Rminus_le.
 rewrite /Rminus Rplus_assoc [- _ + _]Rplus_comm -Rplus_assoc -!/(Rminus _ _).
 exact: Rle_minus.
 Qed.
- 
-Canonical Structure R_archiFieldType := ArchiFieldType R Rarchimedean_axiom.
+
+Canonical Structure R_numArchiDomainType := NumArchiDomainType R Rarchimedean_axiom.
+Canonical Structure R_numArchiFieldType := [numArchiFieldType of R].
+Canonical Structure R_realArchiDomainType := [realArchiDomainType of R].
+Canonical Structure R_realArchiFieldType := [realArchiFieldType of R].
+
  
 (** Here are the lemmas that we will use to prove that R has
 the rcfType structure. *)
@@ -343,7 +346,7 @@ have Hg: (fun x=> f x * f x ^+ n)%R =1 g.
 by apply: (continuity_eq Hg); exact: continuity_mult.
 Qed.
  
-Lemma Rreal_closed_axiom : Num.real_closed_axiom R_archiFieldType.
+Lemma Rreal_closed_axiom : Num.real_closed_axiom R_numDomainType.
 Proof.
 move=> p a b; rewrite !ler_eqVlt.
 case Hpa: ((p.[a])%R == 0%R).
@@ -367,6 +370,8 @@ by exists esp; split=> // y [].
 Qed.
  
 Canonical Structure R_rcfType := RcfType R Rreal_closed_axiom.
+Canonical Structure R_realClosedArchiFieldType := [realClosedArchiFieldType of R].
+
 
 (* proprietes utiles de l'exp *)
 
